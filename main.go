@@ -4,10 +4,8 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/gin-gonic/gin"
-
 	"github.com/fsnotify/fsnotify"
-
+	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
 )
 
@@ -50,11 +48,16 @@ func main() {
 		// 配置文件发生变更之后会调用的回调函数
 		fmt.Println("Config file changed:", e.Name)
 	})
+
 	r := gin.Default()
 	r.GET("/version", func(c *gin.Context) {
 		c.String(http.StatusOK, viper.GetString("version"))
 	})
-	r.Run()
+
+	err = r.Run()
+	if err != nil {
+		return
+	}
 
 }
 
